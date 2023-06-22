@@ -87,12 +87,16 @@ namespace AuthenticationService.Controllers
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction("GetUser", new { id = user.Id }, user);
+                return Ok(user);
+            }
+            catch(DbUpdateException ex)
+            {
+                return BadRequest("user already exists with that credentials");
             }
             catch (Exception ex)
             {
-                Console.WriteLine("error when creating user"+ex.ToString);
-                return null;
+                Console.WriteLine("error when creating user"+ex.ToString());
+                return Problem(ex.Message);
             }
         }
 
