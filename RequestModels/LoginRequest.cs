@@ -2,12 +2,12 @@
 
 namespace AuthenticationService.RequestModels
 {
-    public class LoginBody
+    public class LoginRequest
     {
         public string email { get; set; }
         public string password { get; set; }
 
-        public LoginBody(string email, string password)
+        public LoginRequest(string email, string password)
         {
             this.email = email;
             this.password = password;
