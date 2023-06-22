@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using AuthenticationService.Context;
 using AuthenticationService.Models;
 using AuthenticationService.Utils;
+using AuthenticationService.ResponseModels;
+using AuthenticationService.RequestModels;
 
 namespace AuthenticationService.Controllers
 {
@@ -29,7 +31,7 @@ namespace AuthenticationService.Controllers
         public async Task<ActionResult<bool>>ValidateToken(String token)
         {
             var result= JwtClient.ValidateToken(token);
-            Console.WriteLine($"user id {result.Item2}");
+            
             return result.Item1;
         }
 
@@ -50,7 +52,7 @@ namespace AuthenticationService.Controllers
         
         [HttpPost]
         [Route("/login")]
-        public async Task<ActionResult<LoginResponse>> Login(LoginBody loginBody)
+        public async Task<ActionResult<LoginResponse>> Login(LoginRequest loginBody)
         {
             try
             {

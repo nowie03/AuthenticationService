@@ -1,4 +1,4 @@
-﻿namespace AuthenticationService.Models
+﻿namespace AuthenticationService.ResponseModels
 {
     public class LoginResponse
     {
@@ -6,7 +6,7 @@
 
         public LoginResponse(string token)
         {
-            this.Token = token;
+            Token = token;
         }
     }
 }

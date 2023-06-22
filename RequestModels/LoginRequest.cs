@@ -1,13 +1,13 @@
 ﻿using System.Security.Policy;
 
-namespace AuthenticationService.Models
+namespace AuthenticationService.RequestModels
 {
     public class LoginBody
     {
         public string email { get; set; }
         public string password { get; set; }
 
-        public LoginBody(String email,String password)
+        public LoginBody(string email, string password)
         {
             this.email = email;
             this.password = password;
