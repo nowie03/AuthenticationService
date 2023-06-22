@@ -75,6 +75,7 @@ namespace AuthenticationService.Controllers
 
         // POST: api/Users
         [HttpPost]
+        [Route("/signup")]
         public async Task<ActionResult<User>> PostUser(User user)
         {
           if (_context.Users == null)
