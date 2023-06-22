@@ -24,6 +24,16 @@ namespace AuthenticationService.Controllers
            
         }
 
+        [HttpGet]
+        [Route("/validate")]
+        public async Task<ActionResult<bool>>ValidateToken(String token)
+        {
+            var result= JwtClient.ValidateToken(token);
+            Console.WriteLine($"user id {result.Item2}");
+            return result.Item1;
+        }
+
+
         // GET: api/Users
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
@@ -85,9 +95,6 @@ namespace AuthenticationService.Controllers
         }
 
       
-        private bool UserExists(int id)
-        {
-            return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+       
     }
 }
