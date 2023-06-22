@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AuthenticationService.Context;
 using AuthenticationService.Models;
+using AuthenticationService.Utils;
 
 namespace AuthenticationService.Controllers
 {
@@ -15,10 +16,12 @@ namespace AuthenticationService.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ServiceContext _context;
+    
 
         public UsersController(ServiceContext context)
         {
             _context = context;
+           
         }
 
         // GET: api/Users
@@ -81,6 +84,29 @@ namespace AuthenticationService.Controllers
             return NoContent();
         }
 
+        [HttpPost]
+        [Route("/login")]
+        public async Task<ActionResult<LoginResponse>> Login(LoginBody loginBody)
+        {
+            try
+            {
+                //check for user existence
+                User user = await _context.Users.FirstAsync(user => user.Email == loginBody.email && user.Password==loginBody.password);
+                //get the role of the user
+                Role roleForTheUser = _context.Roles.Find(user.RoleId);
+                //create token
+                var token = JwtClient.GenerateToken(user.Id, roleForTheUser.RoleName);
+                
+
+                return new LoginResponse(token);
+            }catch(Exception ex)
+            {
+                //failed due to bad email or passsword
+                Console.WriteLine($"Failed to login: {ex.Message}");
+                return BadRequest();
+            }
+        }
+
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -90,10 +116,19 @@ namespace AuthenticationService.Controllers
           {
               return Problem("Entity set 'ServiceContext.Users'  is null.");
           }
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            try
+            {
+               
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.Id }, user);
+                return CreatedAtAction("GetUser", new { id = user.Id }, user);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("error when creating user"+ex.ToString);
+                return null;
+            }
         }
 
         // DELETE: api/Users/5
