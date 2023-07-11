@@ -27,7 +27,7 @@ namespace AuthenticationService.Controllers
         }
 
         [HttpGet]
-        [Route("/validate")]
+        [Route("validate")]
         public async Task<ActionResult<bool>>ValidateToken(String token)
         {
             var result= JwtClient.ValidateToken(token);
@@ -51,7 +51,7 @@ namespace AuthenticationService.Controllers
 
         
         [HttpPost]
-        [Route("/login")]
+        [Route("login")]
         public async Task<ActionResult<LoginResponse>> Login(LoginRequest loginBody)
         {
             try
@@ -75,7 +75,7 @@ namespace AuthenticationService.Controllers
 
         // POST: api/Users
         [HttpPost]
-        [Route("/signup")]
+        [Route("signup")]
         public async Task<ActionResult<User>> PostUser(User user)
         {
           if (_context.Users == null)
